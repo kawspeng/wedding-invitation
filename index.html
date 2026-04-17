@@ -276,6 +276,11 @@
                   <img src={cardImageUrl} alt="Our Photo" className="w-full h-auto object-cover" />
                 </div>
 
+                {/* 新人真人照（新增） */}
+                <div className="w-full max-w-[320px] md:max-w-md mx-auto mb-10 rounded-xl overflow-hidden shadow-lg border-4 border-white">
+                  <img src="https://raw.githubusercontent.com/kawspeng/pic/main/wedding.jpg" alt="新人合照" className="w-full h-auto object-cover" />
+                </div>
+
                 <div className={`transition-all duration-300 ${contentTextSize}`}>
                   <h3 className="text-[1.2em] text-pink-500 font-bold mb-8">{isEnglish ? '💖 October 25, 2026 💖' : '💖 2026年 10月 25日 💖'}</h3>
 
@@ -324,6 +329,23 @@
                       <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Location:' : '道館位置：'}</span>{isEnglish ? 'Hua Tian Sheng Shi - Versailles Hall' : '花田盛事築夢莊園 - 凡爾賽廳'}</li>
                       <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Address:' : '傳送座標：'}</span>{isEnglish ? 'No. 618, Puzhong Rd., Zhongli Dist., Taoyuan City' : '桃園市中壢區普忠路618號'}</li>
                     </ul>
+                  </div>
+
+                  {/* 路線圖（新增） */}
+                  <div className="mt-10">
+                    <h4 className="text-[#b07d62] font-bold mb-4 text-[1.1em]">📍 交通路線</h4>
+                    <div className="rounded-xl overflow-hidden shadow-lg border border-[#e8dccf]">
+                      <img src="https://raw.githubusercontent.com/kawspeng/pic/main/%E8%8A%B1%E7%94%B0%E7%9B%9B%E4%BA%8B%E8%B7%AF%E7%B7%9A%E5%9C%96.jpg" alt="會場路線圖" className="w-full h-auto object-cover" />
+                    </div>
+
+                    {/* Google Maps 導航 */}
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=桃園市中壢區普忠路618號"
+                      target="_blank"
+                      className="block mt-4 text-center bg-[#b07d62] text-white font-bold py-3 rounded-lg hover:bg-[#9a6a51] transition"
+                    >
+                      點我開啟 Google Maps 導航
+                    </a>
                   </div>
                 </div>
               </div>
