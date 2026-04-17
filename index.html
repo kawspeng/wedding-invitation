@@ -67,21 +67,21 @@
       const musicUrl = 'https://image2url.com/r2/default/audio/1772460393903-880cd115-e83b-49e8-9dc9-b9315acc2d9e.m4a';
 
       useEffect(() => {
-        const img = new Image();
-        img.src = cardImageUrl;
+  const img = new Image();
+  img.src = topCardImageUrl;
 
-        const autoPlayMusic = async () => {
-          if (audioRef.current) {
-            try {
-              await audioRef.current.play();
-              setIsPlaying(true);
-            } catch (err) {}
-          }
-        };
+  const autoPlayMusic = async () => {
+    if (audioRef.current) {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (err) {}
+    }
+  };
 
-        const timer = setTimeout(() => autoPlayMusic(), 500);
-        return () => clearTimeout(timer);
-      }, []);
+  const timer = setTimeout(() => autoPlayMusic(), 500);
+  return () => clearTimeout(timer);
+}, []);
 
       useEffect(() => {
         if (showDetails && detailsRef.current) {
@@ -172,7 +172,12 @@
               <div className={`absolute z-[60] transition-all duration-700 ease-out transform-gpu ${showCard ? 'opacity-100 scale-100 translate-y-[-120px] rotate-y-0' : 'opacity-0 scale-50 translate-y-0 rotate-y-90'}`} style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}>
                 <div className="relative w-64 h-96 bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
                   <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
-                    <img src={topCardImageUrl} alt="Invitation Card" className="w-full h-full object-cover" /> style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }} />
+                    <img
+  src={topCardImageUrl}
+  alt="Invitation Card"
+  className="w-full h-full object-cover"
+  style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}
+/>
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent rounded-xl pointer-events-none"></div>
                 </div>
