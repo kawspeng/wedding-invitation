@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meither & Frank Wedding Invitation</title>
+
+  <link rel="preload" href="https://pub-13c63c48382147ad828bb11afd3623be.r2.dev/1772458033983-8ycg4g0.png" as="image" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet" />
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5f0e6;
+      font-family: 'Noto Serif TC', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    .desert-gold-text {
+      font-family: 'Great Vibes', cursive;
+      background: linear-gradient(to bottom, #f3dca6 0%, #d4af37 45%, #bfa048 55%, #f3dca6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #d4af37;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+      filter: drop-shadow(0px 2px 2px rgba(180, 140, 60, 0.3));
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const Heart = ({ size = 24, fill = "none", stroke = "currentColor", strokeWidth = 2, className = "" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+      </svg>
+    );
+
+    const App = () => {
+      const [isOpen, setIsOpen] = useState(false);
+      const [particles, setParticles] = useState([]);
+      const [showCard, setShowCard] = useState(false);
+      const [showDetails, setShowDetails] = useState(false);
+      const [isEnglish, setIsEnglish] = useState(false);
+      const [fontSizeLevel, setFontSizeLevel] = useState(0);
+      const [isPlaying, setIsPlaying] = useState(false);
+
+      const detailsRef = useRef(null);
+      const audioRef = useRef(null);
+
+      const textSizes = ['text-lg md:text-xl', 'text-xl md:text-2xl', 'text-2xl md:text-3xl'];
+      const contentTextSize = textSizes[fontSizeLevel];
+
+      const cardImageUrl = 'https://pub-13c63c48382147ad828bb11afd3623be.r2.dev/1772458033983-8ycg4g0.png';
+      const musicUrl = 'https://image2url.com/r2/default/audio/1772460393903-880cd115-e83b-49e8-9dc9-b9315acc2d9e.m4a';
+
+      useEffect(() => {
+        const img = new Image();
+        img.src = cardImageUrl;
+
+        const autoPlayMusic = async () => {
+          if (audioRef.current) {
+            try {
+              await audioRef.current.play();
+              setIsPlaying(true);
+            } catch (err) {}
+          }
+        };
+
+        const timer = setTimeout(() => autoPlayMusic(), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      useEffect(() => {
+        if (showDetails && detailsRef.current) {
+          setTimeout(() => {
+            detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }, [showDetails]);
+
+      useEffect(() => {
+        if (particles.length === 0) return;
+        const interval = setInterval(() => {
+          setParticles(prev => prev
+            .map(p => ({
+              ...p,
+              x: p.x + Math.cos(p.angle) * p.speed,
+              y: p.y + Math.sin(p.angle) * p.speed - 0.5,
+              speed: p.speed * 0.98,
+              scale: p.scale + 0.03,
+              opacity: (p.opacity || 1) - 0.01
+            }))
+            .filter(p => (p.opacity || 1) > 0)
+          );
+        }, 20);
+        return () => clearInterval(interval);
+      }, [particles]);
+
+      const triggerExplosion = () => {
+        const newParticles = [];
+        for (let i = 0; i < 30; i++) {
+          newParticles.push({
+            id: Date.now() + i,
+            x: 0,
+            y: 0,
+            angle: -Math.PI / 2 + (Math.random() * 1.5 - 0.75),
+            speed: 2 + Math.random() * 4,
+            size: 10 + Math.random() * 15,
+            rotation: Math.random() * 360,
+            scale: 0.5,
+          });
+        }
+        setParticles(newParticles);
+      };
+
+      const handleClick = () => {
+        if (isOpen) return;
+        setIsOpen(true);
+        if (audioRef.current && !isPlaying) {
+          audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+        }
+        triggerExplosion();
+        setTimeout(() => setShowCard(true), 300);
+        setTimeout(() => setShowCard(false), 1800);
+        setTimeout(() => {
+          setIsOpen(false);
+          setShowDetails(true);
+        }, 2100);
+      };
+
+      const toggleMusic = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+          audioRef.current.pause();
+        } else {
+          audioRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+      };
+
+      return (
+        <div className="flex flex-col items-center bg-[#f5f0e6] font-sans pb-20 relative" style={{ minHeight: '100dvh' }}>
+          <audio ref={audioRef} src={musicUrl} loop preload="auto" autoPlay />
+
+          <div className="absolute top-4 left-4 z-[100] cursor-pointer bg-white/70 backdrop-blur-sm p-2.5 rounded-full shadow-md hover:bg-white transition-all duration-300 flex items-center justify-center border border-[#e8dccf]" onClick={toggleMusic}>
+            {isPlaying ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b07d62" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-pulse"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b07d62" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            )}
+          </div>
+
+          <div className="relative w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 shrink-0" style={{ height: '100dvh', minHeight: '100vh' }}>
+            <div className={`absolute top-12 md:top-16 text-center z-10 transition-all duration-700 w-full px-4 ${isOpen ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+              <h1 className="text-5xl md:text-6xl desert-gold-text tracking-wider mb-2 pr-2 py-2 leading-tight">Meither <span className="text-3xl md:text-4xl">&</span> Frank</h1>
+            </div>
+
+            <div className="relative w-80 h-80 flex items-center justify-center z-[50]">
+              <div className={`absolute z-[60] transition-all duration-700 ease-out transform-gpu ${showCard ? 'opacity-100 scale-100 translate-y-[-120px] rotate-y-0' : 'opacity-0 scale-50 translate-y-0 rotate-y-90'}`} style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}>
+                <div className="relative w-64 h-96 bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
+                  <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
+                    <img src={cardImageUrl} alt="Invitation Card" className="w-full h-full object-cover" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }} />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent rounded-xl pointer-events-none"></div>
+                </div>
+              </div>
+
+              <div className="relative w-full h-full cursor-pointer group" onClick={handleClick}>
+                <div className="absolute inset-0 bg-pink-200 rounded-full blur-3xl opacity-20 scale-150 group-hover:scale-175 transition-transform duration-1000"></div>
+                <div className="absolute top-1/2 left-1/2 w-0 h-0 z-[45]">
+                  {particles.map(p => (
+                    <div
+                      key={p.id}
+                      className="absolute text-pink-400 drop-shadow-md"
+                      style={{
+                        transform: `translate(${p.x}px, ${p.y}px) rotate(${p.rotation}deg) scale(${p.scale})`,
+                        fontSize: `${p.size}px`,
+                        opacity: p.opacity || 1,
+                        pointerEvents: 'none'
+                      }}
+                    >
+                      ❤
+                    </div>
+                  ))}
+                </div>
+
+                <div className={`relative w-full h-full transition-transform duration-500 ease-out ${isOpen ? 'translate-y-16' : 'hover:-translate-y-2'}`}>
+                  <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-b from-[#fbf5eb] to-[#e8dccf] rounded-b-full shadow-xl overflow-hidden border-b-4 border-[#dccabd] z-30">
+                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}></div>
+                    <div className="absolute top-0 w-full h-4 bg-black/5 blur-sm"></div>
+                  </div>
+
+                  <div className="absolute top-0 w-full h-1/2 z-20 origin-bottom transition-all duration-700 cubic-bezier(0.34, 1.56, 0.64, 1)" style={{ transform: isOpen ? 'translateY(-110px)' : 'translateY(0)' }}>
+                    <div className="w-full h-full bg-gradient-to-br from-[#eeb4be] to-[#cf8895] rounded-t-full shadow-lg overflow-hidden border-t-4 border-[#eeb4be] border-b-[12px] border-[#dcb4a3] relative box-border">
+                      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}></div>
+                      <div className="absolute top-4 left-8 w-24 h-12 bg-white/20 rounded-full blur-xl transform -rotate-12"></div>
+                    </div>
+                    <div className="absolute bottom-[-5px] left-[10%] w-[80%] h-2 bg-black/5 blur-sm rounded-full"></div>
+                  </div>
+
+                  <div className="absolute top-1/2 left-0 w-full h-8 -mt-4 z-40 flex items-center justify-center pointer-events-none">
+                    <div className="h-full w-[35%] bg-gradient-to-b from-[#dcb4a3] via-[#a87661] to-[#8a5d4d] shadow-sm rounded-l-sm"></div>
+                    <div className="h-full w-[30%] opacity-0"></div>
+                    <div className="h-full w-[35%] bg-gradient-to-b from-[#dcb4a3] via-[#a87661] to-[#8a5d4d] shadow-sm rounded-r-sm"></div>
+                  </div>
+
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 flex items-center justify-center">
+                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#e6c4b4] via-[#b58370] to-[#8f5e4e] shadow-lg flex items-center justify-center relative">
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/20 to-transparent pointer-events-none"></div>
+                      <div className="w-20 h-20 rounded-full bg-[#fdfaf6] shadow-inner flex items-center justify-center relative overflow-hidden border border-gray-100">
+                        <div className="w-14 h-14 rounded-full border-2 border-[#d49ea5] flex items-center justify-center bg-[#fff5f6] shadow-sm">
+                          <div className={`relative transition-all duration-1000 ${isOpen ? 'animate-ping opacity-50' : 'animate-pulse'}`}>
+                            <Heart size={36} fill="url(#gemGradient)" stroke="#c87f95" strokeWidth={1} className="drop-shadow-md filter contrast-125" />
+                            <div className="absolute top-2 left-2 w-3 h-3 bg-white/40 blur-[1px] rounded-full"></div>
+                            <div className="absolute top-1 right-3 w-1.5 h-3 bg-white/60 blur-[0.5px] rotate-45"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {!isOpen && (
+                    <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 pointer-events-none z-[100]">
+                      <div className="animate-bounce drop-shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="white" stroke="#c87f95" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 11V6a2 2 0 0 0-4 0v11.85L7.4 16.5a1.84 1.84 0 0 0-2.6 2.6l6.2 6.2a3 3 0 0 0 2.1.9h4.3a3 3 0 0 0 2.9-2.5l1-7A3 3 0 0 0 18.4 13H14v-2z"></path></svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-48 h-8 bg-black/10 blur-xl rounded-full transition-all duration-500 group-hover:w-40 group-hover:blur-lg"></div>
+              </div>
+            </div>
+
+            <div className={`absolute bottom-16 md:bottom-[12vh] text-center z-10 transition-all duration-700 w-full px-4 flex justify-center ${isOpen ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+              <button onClick={handleClick} className="text-[0.95rem] md:text-base font-bold tracking-widest uppercase bg-white text-[#b07d62] px-8 py-3 rounded-full shadow-xl border-2 border-[#dccabd] hover:bg-[#fffbf5] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+                Tap to Open / 點擊開啟
+              </button>
+            </div>
+          </div>
+
+          {showDetails && (
+            <div ref={detailsRef} className="w-full max-w-3xl px-4 md:px-6 animate-fade-in-up mt-4">
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 md:p-10 shadow-xl border border-[#e8dccf] mb-8 text-center relative">
+                <div className="border-b border-[#e8dccf] pb-6 mb-6">
+                  <div className="flex flex-wrap items-center justify-center gap-3 mb-5">
+                    <h2 className={`font-bold text-[#b07d62] text-center m-0 leading-tight ${isEnglish ? 'text-[1.15rem] sm:text-xl' : 'text-[1.4rem]'} md:text-2xl`}>
+                      {isEnglish ? '💌 Adventurer\'s Invitation' : '💌 冒險者邀請函 LOVE'}
+                    </h2>
+                    <button onClick={() => setIsEnglish(!isEnglish)} className="flex items-center justify-center bg-[#fffbf5] border border-[#dccabd] px-3 py-1.5 rounded-lg text-[#b07d62] hover:bg-[#f0e6da] transition-colors shadow-sm shrink-0">
+                      <span className="text-sm font-bold">{isEnglish ? '中' : 'En'}</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-3 bg-[#fffbf5] py-2 px-4 rounded-full border border-[#dccabd] shadow-sm w-max mx-auto">
+                    <span className="text-base font-bold text-[#b07d62] mr-2">{isEnglish ? '🔍 Zoom' : '🔍 友善放大鏡'}</span>
+                    <button onClick={() => setFontSizeLevel(0)} className={`w-10 h-10 flex items-center justify-center rounded-full font-bold transition-all ${fontSizeLevel === 0 ? 'bg-[#b07d62] text-white shadow-md' : 'bg-white text-[#b07d62] hover:bg-[#f0e6da] border border-[#e8dccf]'}`} style={{fontSize: '15px'}}>A</button>
+                    <button onClick={() => setFontSizeLevel(1)} className={`w-12 h-12 flex items-center justify-center rounded-full font-bold transition-all ${fontSizeLevel === 1 ? 'bg-[#b07d62] text-white shadow-md' : 'bg-white text-[#b07d62] hover:bg-[#f0e6da] border border-[#e8dccf]'}`} style={{fontSize: '19px'}}>A</button>
+                    <button onClick={() => setFontSizeLevel(2)} className={`w-14 h-14 flex items-center justify-center rounded-full font-bold transition-all ${fontSizeLevel === 2 ? 'bg-[#b07d62] text-white shadow-md' : 'bg-white text-[#b07d62] hover:bg-[#f0e6da] border border-[#e8dccf]'}`} style={{fontSize: '23px'}}>A</button>
+                  </div>
+                </div>
+
+                <div className="w-full max-w-[280px] md:max-w-sm mx-auto mb-10 rounded-xl overflow-hidden shadow-lg border-4 border-white transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <img src={cardImageUrl} alt="Our Photo" className="w-full h-auto object-cover" />
+                </div>
+
+                <div className={`transition-all duration-300 ${contentTextSize}`}>
+                  <h3 className="text-[1.2em] text-pink-500 font-bold mb-8">{isEnglish ? '💖 October 25, 2026 💖' : '💖 2026年 10月 25日 💖'}</h3>
+
+                  <div className="text-[#6b5a50] leading-loose space-y-6 font-medium">
+                    <p>{isEnglish ? 'In this vast fantasy world,' : '在廣大的奇幻世界中'}<br />{isEnglish ? "I threw the 'Poké Ball of True Love'" : '我投出了『真愛之球』'}<br />{isEnglish ? 'and caught the most precious treasure of my life.' : '捕捉到了這輩子最珍貴的寶物'}</p>
+
+                    <div className="mt-6 space-y-3">
+                      <p>{isEnglish ? "The handsome 'Frank' met" : '帥氣屬性的『彭鼎智』遇見了'}</p>
+                      <p>{isEnglish ? "the sweet 'Meither'" : '甜美屬性的『羅美德』'}</p>
+                    </div>
+
+                    <div className="mt-6 space-y-3">
+                      <p>{isEnglish ? 'Though our starting stats were different,' : '雖然初始屬性不同'}</p>
+                      <p>{isEnglish ? 'our happiness level is now at MAX!' : '但我們的幸福值已來到 MAX！'}</p>
+                    </div>
+
+                    <div className="mt-10 space-y-3 text-[#b07d62] font-bold">
+                      <p>{isEnglish ? 'This journey' : '這段旅程'}</p>
+                      <p>{isEnglish ? 'is made complete with the blessings and company of our family.' : '因為家人的祝福與陪伴而更加完整'}</p>
+                      <div className="flex justify-center gap-10 md:gap-20 mt-8 mb-8 text-[0.9em]">
+                        <div className="text-center">
+                          <p className="text-gray-400 text-[0.8em] mb-2 font-normal">{isEnglish ? "Groom's Parents" : '新郎家長'}</p>
+                          <p>{isEnglish ? 'Mr. Tim Peng' : '彭兆玄 先生'}</p>
+                          <p>{isEnglish ? 'Ms. Anita Zhu' : '朱慧玲 女士'}</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-400 text-[0.8em] mb-2 font-normal">{isEnglish ? "Bride's Parents" : '新娘家長'}</p>
+                          <p>{isEnglish ? 'Mr. Rolando Granada' : '羅南桐 先生'}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-10 space-y-3 font-bold text-[#b07d62]">
+                      <p>{isEnglish ? 'Under the protection and witness of love,' : '在愛的守護與見證下'}</p>
+                      <p>{isEnglish ? 'we sincerely invite all adventurers' : '我們誠摯邀請各位冒險者'}</p>
+                      <p>{isEnglish ? "to witness this 'Evolution Celebration' of love ✨" : '一同見證這場愛的「進化慶典」 ✨'}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-12 bg-[#fffbf5] p-8 rounded-lg border border-[#f0e6da] inline-block w-full">
+                    <h4 className="text-[#b07d62] font-bold mb-6 border-b border-[#e8dccf] pb-3 inline-block px-6 text-[1.1em]">{isEnglish ? '🗓️ Adventure Time & Location' : '🗓️ 冒險時間與地點'}</h4>
+                    <ul className="text-left text-[#6b5a50] space-y-4 mt-4">
+                      <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Date:' : '日期：'}</span>{isEnglish ? 'Oct 25, 2026 (Sunday)' : '2026年 10月25日 (星期日)'}</li>
+                      <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Gathering:' : '冒險者集結：'}</span>{isEnglish ? '17:30 (Entry)' : '17:30 (進場)'}</li>
+                      <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Start:' : '慶典開始：'}</span>{isEnglish ? '18:00 (Opening)' : '18:00 (開場)'}</li>
+                      <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Location:' : '道館位置：'}</span>{isEnglish ? 'Hua Tian Sheng Shi - Versailles Hall' : '花田盛事築夢莊園 - 凡爾賽廳'}</li>
+                      <li className="flex"><span className="font-bold min-w-[5em] shrink-0">{isEnglish ? 'Address:' : '傳送座標：'}</span>{isEnglish ? 'No. 618, Puzhong Rd., Zhongli Dist., Taoyuan City' : '桃園市中壢區普忠路618號'}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <svg width="0" height="0">
+            <defs>
+              <linearGradient id="gemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#f5cbd9" />
+                <stop offset="40%" stopColor="#e89bb2" />
+                <stop offset="100%" stopColor="#d16d8a" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <style>{`
+            @keyframes float {
+              0%, 100% { transform: translateY(0px); }
+              50% { transform: translateY(-10px); }
+            }
+            .animate-float { animation: float 3s ease-in-out infinite; }
+            .rotate-y-90 { transform: rotateY(90deg); }
+            .rotate-y-0 { transform: rotateY(0deg); }
+            .perspective-1000 { perspective: 1000px; }
+            @keyframes fadeInUp {
+              from { opacity: 0; transform: translateY(20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+          `}</style>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
