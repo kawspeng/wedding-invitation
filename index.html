@@ -62,7 +62,8 @@
       const textSizes = ['text-lg md:text-xl', 'text-xl md:text-2xl', 'text-2xl md:text-3xl'];
       const contentTextSize = textSizes[fontSizeLevel];
 
-      const cardImageUrl = 'https://raw.githubusercontent.com/kawspeng/pic/main/pokemoncard.png';
+      const cardImageUrl = 'https://pub-13c63c48382147ad828bb11afd3623be.r2.dev/1772458033983-8ycg4g0.png';
+      const detailImageUrl = 'https://raw.githubusercontent.com/kawspeng/pic/main/pokemoncard.png';
       const musicUrl = 'https://image2url.com/r2/default/audio/1772460393903-880cd115-e83b-49e8-9dc9-b9315acc2d9e.m4a';
 
       useEffect(() => {
@@ -171,7 +172,7 @@
               <div className={`absolute z-[60] transition-all duration-700 ease-out transform-gpu ${showCard ? 'opacity-100 scale-100 translate-y-[-120px] rotate-y-0' : 'opacity-0 scale-50 translate-y-0 rotate-y-90'}`} style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}>
                 <div className="relative w-64 h-96 bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
                   <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
-                    <img src={cardImageUrl} alt="Invitation Card" className="w-full h-full object-cover" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }} />
+                    <img src={topCardImageUrl} alt="Invitation Card" className="w-full h-full object-cover" /> style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }} />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent rounded-xl pointer-events-none"></div>
                 </div>
@@ -273,7 +274,7 @@
                 </div>
 
                 <div className="w-full max-w-[280px] md:max-w-sm mx-auto mb-10 rounded-xl overflow-hidden shadow-lg border-4 border-white transform rotate-2 hover:rotate-0 transition-transform duration-300">
-                  <img src={cardImageUrl} alt="Our Photo" className="w-full h-auto object-cover" />
+                  <img src={detailImageUrl} alt="Our Photo" className="w-full h-auto object-cover" />
                 </div>
 
                 {/* 新人真人照（新增） */}
