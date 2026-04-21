@@ -133,12 +133,12 @@
           audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
         }
         triggerExplosion();
-        setTimeout(() => setShowCard(true), 420);
-        setTimeout(() => setShowCard(false), 1900);
+        setTimeout(() => setShowCard(true), 700);
+        setTimeout(() => setShowCard(false), 2500);
         setTimeout(() => {
           setIsOpen(false);
           setShowDetails(true);
-        }, 2200);
+        }, 2850);
       };
 
       const toggleMusic = () => {
@@ -202,18 +202,18 @@
                   ))}
                 </div>
 
-                <div className={`relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? 'scale-105' : 'hover:-translate-y-2'}`}>
+                <div className={`relative w-full h-full transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? 'scale-105' : 'hover:-translate-y-2'}`}>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="relative w-[300px] h-[260px] md:w-[340px] md:h-[290px]">
 
-                      <div className={`absolute inset-0 rounded-full blur-3xl bg-pink-200/30 transition-all duration-700 ${isOpen ? 'scale-125 opacity-70' : 'scale-100 opacity-40'}`}></div>
+                      <div className={`absolute inset-0 rounded-full blur-3xl bg-pink-200/30 transition-all duration-[1100ms] ${isOpen ? 'scale-125 opacity-70' : 'scale-100 opacity-40'}`}></div>
 
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className={`w-20 h-20 rounded-full bg-white/20 blur-2xl transition-all duration-700 ${isOpen ? 'scale-150 opacity-100' : 'scale-75 opacity-0'}`}></div>
+                        <div className={`w-20 h-20 rounded-full bg-white/20 blur-2xl transition-all duration-[1100ms] ${isOpen ? 'scale-150 opacity-100' : 'scale-75 opacity-0'}`}></div>
                       </div>
 
                       <div
-                        className="absolute left-0 top-0 w-1/2 h-full origin-right z-30 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        className="absolute left-0 top-0 w-1/2 h-full origin-right z-30 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                         style={{
                           transform: isOpen
                             ? 'translateX(-42px) rotate(-8deg)'
@@ -234,7 +234,7 @@
                       </div>
 
                       <div
-                        className="absolute right-0 top-0 w-1/2 h-full origin-left z-30 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        className="absolute right-0 top-0 w-1/2 h-full origin-left z-30 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                         style={{
                           transform: isOpen
                             ? 'translateX(42px) rotate(8deg)'
@@ -244,7 +244,7 @@
                         <div className="relative w-full h-full rounded-r-full overflow-hidden shadow-xl border border-[#e7cfda] bg-gradient-to-b from-[#e7b2c7] to-[#c78ea5]">
                           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter2\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.7\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter2)\'/%3E%3C/svg%3E")' }}></div>
                           <div className="absolute left-0 right-0 bottom-0 h-[42%] bg-[#fffafc]"></div>
-                          <div className="absolute left-0 right-0 top-[50%] -translate-y-1/2 h></div>
+                          <div className="absolute left-0 right-0 top-[50%] -translate-y-1/2 h-8 bg-[#d7b0b6] opacity-70 border-y border-white/30"></div>
                           <div className="absolute left-[-22px] top-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white shadow-md border-4 border-[#f4dce3] flex items-center justify-center z-20">
                             <div className="w-10 h-10 rounded-full border-2 border-[#d48fa7] flex items-center justify-center">
                               <Heart size={18} fill="#f6c8d7" stroke="#c87f95" strokeWidth={1.5} />
@@ -255,21 +255,20 @@
                       </div>
 
                       <div
-                        className={`absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        className={`absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           isOpen ? 'scale-105 -translate-y-[58%]' : 'scale-100'
                         }`}
                       >
                         <div className="w-[150px] h-[150px] md:w-[168px] md:h-[168px] rounded-full bg-[#fdf8fb] border-[10px] border-[#e7c1d0] shadow-xl flex items-center justify-center relative overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-pink-100/30"></div>
                           <div className="absolute inset-[12px] rounded-full border border-[#efe1e8]"></div>
-                          <div className="text-center px-4 relative z-10">
-                            <div className="text-[#c88ea2] text-xs md:text-sm tracking-[0.25em] mb-2">WEDDING</div>
-                            <div className="text-[#8f6b78] text-sm md:text-base font-bold leading-snug">
-                              Tap to Open
+                          <div className="flex items-center justify-center relative z-10">
+                            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-[#ead8e1] bg-white/70 flex items-center justify-center shadow-inner">
+                              <Heart size={34} fill="url(#gemGradient)" stroke="#c87f95" strokeWidth={1.4} className="animate-soft-pulse" />
                             </div>
-                            <div className="text-[#b6929d] text-xs mt-2">點擊開啟喜帖</div>
                           </div>
                         </div>
+                      </div>
                       </div>
 
                       <div
