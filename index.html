@@ -261,21 +261,19 @@ const handleClick = () => {
       {/* 球下半部 */}
       <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] bg-[#fffafc] z-[20]">
         <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-[#fffafc]"></div>
-        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[10px] bg-[#d8b9c0] border-y border-white/40 z-[22]"></div>
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[6px] bg-[#d8b9c0] border-y border-white/40 z-[22]"></div>
       </div>
 
       {/* 球上半部，微掀開 */}
       <div
-        className={`absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] z-[30] transition-all duration-[850ms] ease-out ${
-          isBursting ? 'translate-y-[-10px] scale-[1.01]' : 'translate-y-0 scale-100'
-        }`}
-        style={{
-          clipPath: 'inset(0 0 50% 0 round 9999px)'
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-[#efbfd0] to-[#d89fb4]"></div>
-        <div className="absolute top-6 left-10 w-24 h-12 bg-white/20 rounded-full blur-xl -rotate-12"></div>
-      </div>
+  className={`absolute left-0 right-0 top-0 h-1/2 rounded-t-full overflow-hidden z-[30] transition-all duration-[850ms] ease-out ${
+    isBursting ? '-translate-y-3 scale-y-[1.02]' : 'translate-y-0 scale-y-100'
+  }`}
+>
+  <div className="absolute inset-0 bg-gradient-to-b from-[#efbfd0] to-[#d89fb4] border-x border-t border-[#ead6dc] rounded-t-full"></div>
+  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#cfaeb7]/70"></div>
+  <div className="absolute top-6 left-10 w-24 h-12 bg-white/20 rounded-full blur-xl -rotate-12"></div>
+</div>
 
       {/* 中央扣環 */}
       <div
