@@ -261,36 +261,38 @@ const handleClick = () => {
       )}
 
       {/* 球內卡片容器：先藏在球裡，再升出來 */}
-      <div className="absolute inset-0 z-[32] flex items-center justify-center pointer-events-none">
-        <div className="relative w-[210px] h-[210px] md:w-[230px] md:h-[230px] overflow-hidden"
-  style={{
-    clipPath: 'inset(42% 0 0 0 round 0 0 9999px 9999px)'
-  }}>
-          <div
-            className={`absolute left-1/2 top-[58%] -translate-x-1/2 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              showCard
-                ? 'translate-y-[-145px] scale-100 opacity-100'
-                : 'translate-y-[10px] scale-75 opacity-0'
-            }`}
-            style={{ width: '160px' }}
-          >
-            <div
-              className="relative w-full h-[240px] bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float"
-              style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}
-            >
-              <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
-                <img
-                  src={topCardImageUrl}
-                  alt="Invitation Card"
-                  className="w-full h-full object-cover"
-                  style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent rounded-xl pointer-events-none"></div>
-            </div>
-          </div>
+      <div className="absolute inset-0 z-[41] flex items-center justify-center pointer-events-none">
+  <div
+    className="relative w-[210px] h-[210px] md:w-[230px] md:h-[230px] overflow-hidden"
+    style={{
+      clipPath: 'inset(36% 0 0 0 round 0 0 9999px 9999px)'
+    }}
+  >
+    <div
+      className={`absolute left-1/2 top-[72%] -translate-x-1/2 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        showCard
+          ? 'translate-y-[-205px] scale-100 opacity-100'
+          : 'translate-y-[0px] scale-75 opacity-0'
+      }`}
+      style={{ width: '160px' }}
+    >
+      <div
+        className="relative w-full h-[240px] bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float"
+        style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}
+      >
+        <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
+          <img
+            src={topCardImageUrl}
+            alt="Invitation Card"
+            className="w-full h-full object-cover"
+            style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}
+          />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent rounded-xl pointer-events-none"></div>
       </div>
+    </div>
+  </div>
+</div>
       
       {/* 球下半部 */}
       <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] bg-[#fffafc] z-[20]">
@@ -327,12 +329,12 @@ const handleClick = () => {
 
       {/* 核心爆光 */}
       <div
-        className={`absolute left-1/2 top-1/2 z-[19] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-700 pointer-events-none ${
-          isBursting
-            ? 'w-[170px] h-[170px] opacity-75 blur-md scale-100'
-            : 'w-[18px] h-[18px] opacity-0 blur-0 scale-50'
-        }`}
-      ></div>
+  className={`absolute left-1/2 top-1/2 z-[18] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-700 pointer-events-none ${
+    isBursting
+      ? 'w-[150px] h-[150px] opacity-45 blur-lg scale-100'
+      : 'w-[18px] h-[18px] opacity-0 blur-0 scale-50'
+  }`}
+></div>
 
       {/* 垂直光柱 */}
       <div
