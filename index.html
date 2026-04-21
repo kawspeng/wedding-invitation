@@ -50,6 +50,7 @@
     const App = () => {
       const [isOpen, setIsOpen] = useState(false);
       const [isBursting, setIsBursting] = useState(false);
+      const [showRays, setShowRays] = useState(false);
       const [particles, setParticles] = useState([]);
       const [showCard, setShowCard] = useState(false);
       const [showDetails, setShowDetails] = useState(false);
@@ -127,7 +128,7 @@
         setParticles(newParticles);
       };
 
-      const handleClick = () => {
+const handleClick = () => {
   if (isOpen || isBursting) return;
 
   setIsOpen(true);
@@ -136,30 +137,34 @@
     audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
   }
 
-  // 先讓球發亮
+  // 球先啟動
   setTimeout(() => {
     setIsBursting(true);
-    triggerExplosion();
-  }, 250);
+  }, 180);
 
-  // 白光跑一段後，卡片再出來
+  // 光束與粒子再出來
+  setTimeout(() => {
+    setShowRays(true);
+    triggerExplosion();
+  }, 520);
+
+  // 卡片最後才浮出
   setTimeout(() => {
     setShowCard(true);
-  }, 1050);
+  }, 1150);
 
-  // 卡片收掉
   setTimeout(() => {
     setShowCard(false);
-  }, 2450);
+  }, 2550);
 
-  // 最後進入詳細內容
   setTimeout(() => {
+    setShowRays(false);
     setIsBursting(false);
     setIsOpen(false);
     setShowDetails(true);
-  }, 2800);
+  }, 2900);
 };
-
+      
       const toggleMusic = () => {
         if (!audioRef.current) return;
         if (isPlaying) {
@@ -189,7 +194,7 @@
 
             <div className="relative w-80 h-80 flex items-center justify-center z-[50]">
               <div
-  className={`absolute z-[60] transition-all duration-[900ms] ease-out transform-gpu ${
+  className={`absolute z-[45] transition-all duration-[900ms] ease-out transform-gpu ${
     showCard
       ? 'opacity-100 scale-100 translate-y-[-150px] rotate-y-0'
       : 'opacity-0 scale-50 translate-y-[20px] rotate-y-90'
@@ -232,8 +237,8 @@
   <div className="absolute inset-0 flex items-center justify-center">
     <div
       className={`relative w-[300px] h-[300px] md:w-[340px] md:h-[340px] transition-all duration-700 ${
-        isOpen ? 'scale-105' : 'group-hover:-translate-y-2'
-      } ${isBursting ? 'animate-ball-burst' : ''}`}
+  isOpen ? 'scale-105' : 'group-hover:-translate-y-2'
+} ${isBursting ? 'animate-ball-burst' : ''}`}
     >
       {/* 外圍柔光 */}
       <div
@@ -242,24 +247,39 @@
         }`}
       ></div>
 
-      {/* 球本體 */}
-      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] bg-[#fffafc]">
-        {/* 上半球 */}
-        <div className="absolute left-0 right-0 top-0 h-1/2 bg-gradient-to-b from-[#efbfd0] to-[#d89fb4]"></div>
+      {/* 放射光束 */}
+      {showRays && (
+        <>
+          <div className="absolute left-1/2 top-1/2 w-[280px] h-[18px] bg-white/90 blur-md -translate-x-1/2 -translate-y-1/2 rotate-[0deg] z-[38] animate-ray-burst"></div>
+          <div className="absolute left-1/2 top-1/2 w-[300px] h-[16px] bg-cyan-100/80 blur-md -translate-x-1/2 -translate-y-1/2 rotate-[28deg] z-[38] animate-ray-burst"></div>
+          <div className="absolute left-1/2 top-1/2 w-[300px] h-[16px] bg-cyan-100/80 blur-md -translate-x-1/2 -translate-y-1/2 rotate-[-28deg] z-[38] animate-ray-burst"></div>
+          <div className="absolute left-1/2 top-1/2 w-[260px] h-[14px] bg-white/80 blur-md -translate-x-1/2 -translate-y-1/2 rotate-[58deg] z-[38] animate-ray-burst"></div>
+          <div className="absolute left-1/2 top-1/2 w-[260px] h-[14px] bg-white/80 blur-md -translate-x-1/2 -translate-y-1/2 rotate-[-58deg] z-[38] animate-ray-burst"></div>
+        </>
+      )}
 
-        {/* 下半球 */}
+      {/* 球下半部 */}
+      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] bg-[#fffafc] z-[20]">
         <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-[#fffafc]"></div>
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[10px] bg-[#d8b9c0] border-y border-white/40 z-[22]"></div>
+      </div>
 
-        {/* 中線 */}
-        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[10px] bg-[#d8b9c0] border-y border-white/40 z-20"></div>
-
-        {/* 高光 */}
-        <div className="absolute top-6 left-10 w-24 h-12 bg-white/20 rounded-full blur-xl -rotate-12 z-10"></div>
+      {/* 球上半部，微掀開 */}
+      <div
+        className={`absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] z-[30] transition-all duration-[850ms] ease-out ${
+          isBursting ? 'translate-y-[-10px] scale-[1.01]' : 'translate-y-0 scale-100'
+        }`}
+        style={{
+          clipPath: 'inset(0 0 50% 0 round 9999px)'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-[#efbfd0] to-[#d89fb4]"></div>
+        <div className="absolute top-6 left-10 w-24 h-12 bg-white/20 rounded-full blur-xl -rotate-12"></div>
       </div>
 
       {/* 中央扣環 */}
       <div
-        className={`absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
+        className={`absolute left-1/2 top-1/2 z-[40] -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
           isBursting ? 'scale-110 opacity-0' : 'scale-100 opacity-100'
         }`}
       >
@@ -273,26 +293,26 @@
         </div>
       </div>
 
-      {/* 爆發白光 */}
+      {/* 核心爆光 */}
       <div
-        className={`absolute left-1/2 top-1/2 z[-35]- -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-800 pointer-events-none ${
+        className={`absolute left-1/2 top-1/2 z-[39] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-700 pointer-events-none ${
           isBursting
-            ? 'w-[150px] h-[150px] opacity-90 blur-md scale-100'
-            : 'w-[20px] h-[20px] opacity-0 blur-0 scale-50'
+            ? 'w-[170px] h-[170px] opacity-95 blur-md scale-100'
+            : 'w-[18px] h-[18px] opacity-0 blur-0 scale-50'
         }`}
       ></div>
 
       {/* 垂直光柱 */}
       <div
-        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[65%] z-[35] rounded-full bg-white/80 blur-2xl transition-all duration-800 pointer-events-none ${
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[64%] z-[37] rounded-full bg-white/85 blur-2xl transition-all duration-700 pointer-events-none ${
           isBursting
-            ? 'w-16 h-[180px] opacity-100'
-            : 'w-4 h-[40px] opacity-0'
+            ? 'w-16 h-[200px] opacity-100'
+            : 'w-4 h-[50px] opacity-0'
         }`}
       ></div>
 
       {/* 地面陰影 */}
-      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[220px] h-10 rounded-full bg-black/10 blur-xl"></div>
+      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[220px] h-10 rounded-full bg-black/10 blur-xl z-[5]"></div>
     </div>
   </div>
 </div>
@@ -448,6 +468,25 @@
   .animate-ball-burst {
     animation: ballBurst 0.6s ease-out forwards;
   }
+
+  @keyframes rayBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scaleX(0.3);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scaleX(1.05);
+  }
+  100% {
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scaleX(1);
+  }
+}
+
+.animate-ray-burst {
+  animation: rayBurst 0.55s ease-out forwards;
+}
 `}</style>
         </div>
       );
@@ -455,3 +494,6 @@
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
+</script>
+</body>
+</html>
