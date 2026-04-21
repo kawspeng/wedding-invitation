@@ -140,12 +140,12 @@
   setTimeout(() => {
     setIsBursting(true);
     triggerExplosion();
-  }, 450);
+  }, 300);
 
   // 喜帖卡片彈出
   setTimeout(() => {
     setShowCard(true);
-  }, 700);
+  }, 520);
 
   // 卡片收掉
   setTimeout(() => {
@@ -188,11 +188,14 @@
             </div>
 
             <div className="relative w-80 h-80 flex items-center justify-center z-[50]">
-              <div className={`absolute z-[60] transition-all duration-[900ms] ease-out transform-gpu ${
-  showCard
-    ? 'opacity-100 scale-100 translate-y-[-150px] rotate-y-0'
-    : 'opacity-0 scale-50 translate-y-[20px] rotate-y-90'
-}`}> style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}>
+              <div
+  className={`absolute z-[60] transition-all duration-[900ms] ease-out transform-gpu ${
+    showCard
+      ? 'opacity-100 scale-100 translate-y-[-150px] rotate-y-0'
+      : 'opacity-0 scale-50 translate-y-[20px] rotate-y-90'
+  }`}
+  style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
+>
                 <div className="relative w-64 h-96 bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
                   <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
                     <img
@@ -281,7 +284,7 @@
 
       {/* 垂直光柱 */}
       <div
-        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[65%] z-35 rounded-full bg-white/80 blur-2xl transition-all duration-500 pointer-events-none ${
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[65%] z-[35] rounded-full bg-white/80 blur-2xl transition-all duration-500 pointer-events-none ${
           isBursting
             ? 'w-16 h-[180px] opacity-100'
             : 'w-4 h-[40px] opacity-0'
@@ -293,17 +296,6 @@
     </div>
   </div>
 </div>
-
-                      <div
-                        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 md:w-10 h-[150px] rounded-full bg-white/55 blur-2xl transition-all duration-[900ms] ${
-                          isOpen ? 'opacity-100 scale-y-110' : 'opacity-0 scale-y-50'
-                        }`}
-                      ></div>
-
-                      <div className={`absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-black/10 blur-xl transition-all duration-[900ms] ${isOpen ? 'w-[170px] h-8 opacity-70' : 'w-[220px] h-10 opacity-45'}`}></div>
-                    </div>
-                  </div>
-                </div>
 
                 {!isOpen && (
                   <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 pointer-events-none z-[100]">
@@ -443,23 +435,20 @@
               to { opacity: 1; transform: translateY(0); }
             }
             .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
-          `}</style>
-        </div>
-      );
-    };
+        
+            @keyframes ballBurst {
+    0%   { transform: scale(1); }
+    20%  { transform: scale(0.98) rotate(-2deg); }
+    40%  { transform: scale(1.02) rotate(2deg); }
+    60%  { transform: scale(0.99) rotate(-1deg); }
+    80%  { transform: scale(1.03) rotate(1deg); }
+    100% { transform: scale(1.08); }
+  }
 
-    @keyframes ballBurst {
-  0%   { transform: scale(1); }
-  20%  { transform: scale(0.98) rotate(-2deg); }
-  40%  { transform: scale(1.02) rotate(2deg); }
-  60%  { transform: scale(0.99) rotate(-1deg); }
-  80%  { transform: scale(1.03) rotate(1deg); }
-  100% { transform: scale(1.08); }
-}
-
-.animate-ball-burst {
-  animation: ballBurst 0.6s ease-out forwards;
-}
+  .animate-ball-burst {
+    animation: ballBurst 0.6s ease-out forwards;
+  }
+`}</style>
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
