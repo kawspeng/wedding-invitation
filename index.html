@@ -261,12 +261,15 @@ const handleClick = () => {
       )}
 
       {/* 球內卡片容器：先藏在球裡，再升出來 */}
-      <div className="absolute inset-0 z-[21] flex items-center justify-center pointer-events-none">
-        <div className="relative w-[210px] h-[210px] md:w-[230px] md:h-[230px] overflow-hidden rounded-full">
+      <div className="absolute inset-0 z-[32] flex items-center justify-center pointer-events-none">
+        <div className="relative w-[210px] h-[210px] md:w-[230px] md:h-[230px] overflow-hidden"
+  style={{
+    clipPath: 'inset(42% 0 0 0 round 0 0 9999px 9999px)'
+  }}>
           <div
             className={`absolute left-1/2 top-[58%] -translate-x-1/2 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
               showCard
-                ? 'translate-y-[-190px] scale-100 opacity-100'
+                ? 'translate-y-[-145px] scale-100 opacity-100'
                 : 'translate-y-[10px] scale-75 opacity-0'
             }`}
             style={{ width: '160px' }}
@@ -324,9 +327,9 @@ const handleClick = () => {
 
       {/* 核心爆光 */}
       <div
-        className={`absolute left-1/2 top-1/2 z-[39] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-700 pointer-events-none ${
+        className={`absolute left-1/2 top-1/2 z-[19] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-700 pointer-events-none ${
           isBursting
-            ? 'w-[170px] h-[170px] opacity-95 blur-md scale-100'
+            ? 'w-[170px] h-[170px] opacity-75 blur-md scale-100'
             : 'w-[18px] h-[18px] opacity-0 blur-0 scale-50'
         }`}
       ></div>
