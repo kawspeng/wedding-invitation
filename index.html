@@ -49,6 +49,7 @@
 
     const App = () => {
       const [isOpen, setIsOpen] = useState(false);
+      const [isBursting, setIsBursting] = useState(false);
       const [particles, setParticles] = useState([]);
       const [showCard, setShowCard] = useState(false);
       const [showDetails, setShowDetails] = useState(false);
@@ -127,19 +128,37 @@
       };
 
       const handleClick = () => {
-        if (isOpen) return;
-        setIsOpen(true);
-        if (audioRef.current && !isPlaying) {
-          audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-        }
-        triggerExplosion();
-        setTimeout(() => setShowCard(true), 850);
-        setTimeout(() => setShowCard(false), 2550);
-        setTimeout(() => {
-          setIsOpen(false);
-          setShowDetails(true);
-        }, 2900);
-      };
+  if (isOpen || isBursting) return;
+
+  setIsOpen(true);
+
+  if (audioRef.current && !isPlaying) {
+    audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+  }
+
+  // 球啟動
+  setTimeout(() => {
+    setIsBursting(true);
+    triggerExplosion();
+  }, 450);
+
+  // 喜帖卡片彈出
+  setTimeout(() => {
+    setShowCard(true);
+  }, 700);
+
+  // 卡片收掉
+  setTimeout(() => {
+    setShowCard(false);
+  }, 2200);
+
+  // 進入詳細內容
+  setTimeout(() => {
+    setIsBursting(false);
+    setIsOpen(false);
+    setShowDetails(true);
+  }, 2550);
+};
 
       const toggleMusic = () => {
         if (!audioRef.current) return;
@@ -169,7 +188,11 @@
             </div>
 
             <div className="relative w-80 h-80 flex items-center justify-center z-[50]">
-              <div className={`absolute z-[60] transition-all duration-700 ease-out transform-gpu ${showCard ? 'opacity-100 scale-100 translate-y-[-120px] rotate-y-0' : 'opacity-0 scale-50 translate-y-0 rotate-y-90'}`} style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}>
+              <div className={`absolute z-[60] transition-all duration-[900ms] ease-out transform-gpu ${
+  showCard
+    ? 'opacity-100 scale-100 translate-y-[-150px] rotate-y-0'
+    : 'opacity-0 scale-50 translate-y-[20px] rotate-y-90'
+}`}> style={{ perspective: '1000px', transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}>
                 <div className="relative w-64 h-96 bg-white rounded-xl shadow-2xl p-2 border-4 border-[#e8dccf] animate-float" style={{ backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
                   <div className="w-full h-full rounded-lg overflow-hidden bg-pink-50 relative flex items-center justify-center">
                     <img
@@ -202,62 +225,74 @@
                   ))}
                 </div>
 
-                <div className={`relative w-full h-full transition-transform duration-[1300ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${isOpen ? 'scale-105' : 'hover:-translate-y-2'}`}>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-[300px] h-[300px] md:w-[340px] md:h-[340px]">
+                <div className="relative w-full h-full">
+  <div className="absolute inset-0 flex items-center justify-center">
+    <div
+      className={`relative w-[300px] h-[300px] md:w-[340px] md:h-[340px] transition-all duration-700 ${
+        isOpen ? 'scale-105' : 'group-hover:-translate-y-2'
+      } ${isBursting ? 'animate-ball-burst' : ''}`}
+    >
+      {/* 外圍柔光 */}
+      <div
+        className={`absolute inset-0 rounded-full blur-3xl bg-pink-200/30 transition-all duration-700 ${
+          isBursting ? 'scale-125 opacity-80' : 'scale-100 opacity-40'
+        }`}
+      ></div>
 
-                      <div className={`absolute inset-0 rounded-full blur-3xl bg-pink-200/30 transition-all duration-[1300ms] ${isOpen ? 'scale-125 opacity-70' : 'scale-100 opacity-40'}`}></div>
+      {/* 球本體 */}
+      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border border-[#ead6dc] bg-[#fffafc]">
+        {/* 上半球 */}
+        <div className="absolute left-0 right-0 top-0 h-1/2 bg-gradient-to-b from-[#efbfd0] to-[#d89fb4]"></div>
 
-                      <div
-                        className="absolute left-0 top-0 w-1/2 h-full origin-right z-30 transition-all duration-[1300ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                        style={{
-                          transform: isOpen
-                            ? 'translateX(-26px) rotate(-24deg)'
-                            : 'translateX(0) rotate(0deg)'
-                        }}
-                      >
-                        <div className="relative w-full h-full rounded-l-full overflow-hidden shadow-xl border border-[#ead6dc] bg-gradient-to-b from-[#efbfd0] to-[#d89fb4]">
-                          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.7\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}></div>
-                          <div className="absolute left-0 right-0 top-[56%] bottom-0 bg-[#fffafc]"></div>
-                          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[10px] bg-[#d8b9c0] opacity-95 border-y border-white/40"></div>
-                          <div className="absolute top-5 left-8 w-20 h-10 bg-white/18 rounded-full blur-xl -rotate-12"></div>
-                        </div>
-                      </div>
+        {/* 下半球 */}
+        <div className="absolute left-0 right-0 bottom-0 h-1/2 bg-[#fffafc]"></div>
 
-                      <div
-                        className="absolute right-0 top-0 w-1/2 h-full origin-left z-30 transition-all duration-[1300ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                        style={{
-                          transform: isOpen
-                            ? 'translateX(26px) rotate(24deg)'
-                            : 'translateX(0) rotate(0deg)'
-                        }}
-                      >
-                        <div className="relative w-full h-full rounded-r-full overflow-hidden shadow-xl border border-[#ead6dc] bg-gradient-to-b from-[#efbfd0] to-[#d89fb4]">
-                          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter2\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.7\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter2)\'/%3E%3C/svg%3E")' }}></div>
-                          <div className="absolute left-0 right-0 top-[56%] bottom-0 bg-[#fffafc]"></div>
-                          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[10px] bg-[#d8b9c0] opacity-95 border-y border-white/40"></div>
-                          <div className="absolute top-5 right-8 w-20 h-10 bg-white/18 rounded-full blur-xl rotate-12"></div>
-                        </div>
-                      </div>
+        {/* 中線 */}
+        <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[10px] bg-[#d8b9c0] border-y border-white/40 z-20"></div>
 
-                      <div className="absolute left-1/2 top-0 -translate-x-1/2 z-20 w-[2px] h-full bg-white/45"></div>
+        {/* 高光 */}
+        <div className="absolute top-6 left-10 w-24 h-12 bg-white/20 rounded-full blur-xl -rotate-12 z-10"></div>
+      </div>
 
-                      <div
-                        className={`absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 transition-all duration-[900ms] ${
-                          isOpen ? 'scale-75 opacity-0' : 'scale-100 opacity-100'
-                        }`}
-                      >
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#dec0b2] via-[#b88470] to-[#8f5e4e] shadow-lg flex items-center justify-center relative border border-[#cfae9f]">
-                          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/20 to-transparent"></div>
-                          <div className="w-14 h-14 rounded-full bg-[#fff7f9] shadow-inner flex items-center justify-center border border-[#ecd8de]">
-                            <div className="w-10 h-10 rounded-full border-2 border-[#d49ea5] flex items-center justify-center bg-[#fff5f6]">
-                              <div className={`${isOpen ? 'animate-ping opacity-50' : 'animate-pulse'}`}>
-                                <Heart size={24} fill="url(#gemGradient)" stroke="#c87f95" strokeWidth={1} />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+      {/* 中央扣環 */}
+      <div
+        className={`absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
+          isBursting ? 'scale-110 opacity-0' : 'scale-100 opacity-100'
+        }`}
+      >
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#dec0b2] via-[#b88470] to-[#8f5e4e] shadow-lg flex items-center justify-center relative border border-[#cfae9f]">
+          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/20 to-transparent"></div>
+          <div className="w-14 h-14 rounded-full bg-[#fff7f9] shadow-inner flex items-center justify-center border border-[#ecd8de]">
+            <div className="w-10 h-10 rounded-full border-2 border-[#d49ea5] flex items-center justify-center bg-[#fff5f6]">
+              <Heart size={24} fill="url(#gemGradient)" stroke="#c87f95" strokeWidth={1} className={isOpen ? 'animate-pulse' : ''} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 爆發白光 */}
+      <div
+        className={`absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-500 pointer-events-none ${
+          isBursting
+            ? 'w-[150px] h-[150px] opacity-90 blur-md scale-100'
+            : 'w-[20px] h-[20px] opacity-0 blur-0 scale-50'
+        }`}
+      ></div>
+
+      {/* 垂直光柱 */}
+      <div
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[65%] z-35 rounded-full bg-white/80 blur-2xl transition-all duration-500 pointer-events-none ${
+          isBursting
+            ? 'w-16 h-[180px] opacity-100'
+            : 'w-4 h-[40px] opacity-0'
+        }`}
+      ></div>
+
+      {/* 地面陰影 */}
+      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[220px] h-10 rounded-full bg-black/10 blur-xl"></div>
+    </div>
+  </div>
+</div>
 
                       <div
                         className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 md:w-10 h-[150px] rounded-full bg-white/55 blur-2xl transition-all duration-[900ms] ${
@@ -413,6 +448,18 @@
       );
     };
 
+    @keyframes ballBurst {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(0.98) rotate(-2deg); }
+  40%  { transform: scale(1.02) rotate(2deg); }
+  60%  { transform: scale(0.99) rotate(-1deg); }
+  80%  { transform: scale(1.03) rotate(1deg); }
+  100% { transform: scale(1.08); }
+}
+
+.animate-ball-burst {
+  animation: ballBurst 0.6s ease-out forwards;
+}
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
