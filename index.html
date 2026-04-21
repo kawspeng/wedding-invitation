@@ -136,28 +136,28 @@
     audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
   }
 
-  // 球啟動
+  // 先讓球發亮
   setTimeout(() => {
     setIsBursting(true);
     triggerExplosion();
-  }, 300);
+  }, 250);
 
-  // 喜帖卡片彈出
+  // 白光跑一段後，卡片再出來
   setTimeout(() => {
     setShowCard(true);
-  }, 520);
+  }, 1050);
 
   // 卡片收掉
   setTimeout(() => {
     setShowCard(false);
-  }, 2200);
+  }, 2450);
 
-  // 進入詳細內容
+  // 最後進入詳細內容
   setTimeout(() => {
     setIsBursting(false);
     setIsOpen(false);
     setShowDetails(true);
-  }, 2550);
+  }, 2800);
 };
 
       const toggleMusic = () => {
@@ -275,7 +275,7 @@
 
       {/* 爆發白光 */}
       <div
-        className={`absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-500 pointer-events-none ${
+        className={`absolute left-1/2 top-1/2 z[-35]- -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-800 pointer-events-none ${
           isBursting
             ? 'w-[150px] h-[150px] opacity-90 blur-md scale-100'
             : 'w-[20px] h-[20px] opacity-0 blur-0 scale-50'
@@ -284,7 +284,7 @@
 
       {/* 垂直光柱 */}
       <div
-        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[65%] z-[35] rounded-full bg-white/80 blur-2xl transition-all duration-500 pointer-events-none ${
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[65%] z-[35] rounded-full bg-white/80 blur-2xl transition-all duration-800 pointer-events-none ${
           isBursting
             ? 'w-16 h-[180px] opacity-100'
             : 'w-4 h-[40px] opacity-0'
