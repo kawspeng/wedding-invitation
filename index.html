@@ -261,13 +261,13 @@ const handleClick = () => {
       )}
 
       {/* 球內卡片容器：先藏在球裡，再升出來 */}
-      <div className="absolute inset-0 z-[26] flex items-center justify-center pointer-events-none">
+      <div className={`absolute inset-0 ${showCard ? 'z-[31]' : 'z-[26]'} flex items-center justify-center pointer-events-none`}>
   <div className="relative w-[210px] h-[260px] md:w-[230px] md:h-[280px] overflow-visible">
     <div
       className={`absolute left-1/2 top-[62%] -translate-x-1/2 transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
         showCard
-          ? 'translate-y-[-145px] scale-100 opacity-100'
-          : 'translate-y-[36px] scale-75 opacity-0'
+          ? 'translate-y-[-185px] scale-100 opacity-100'
+          : 'translate-y-[42px] scale-75 opacity-0'
       }`}
       style={{ width: '160px' }}
     >
