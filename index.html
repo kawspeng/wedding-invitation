@@ -66,6 +66,7 @@
 
       const topCardImageUrl = 'https://pub-13c63c48382147ad828bb11afd3623be.r2.dev/1772458033983-8ycg4g0.png';
       const detailImageUrl = 'https://raw.githubusercontent.com/kawspeng/pic/main/pokemoncard.png';
+      const detailImageEnUrl = 'https://raw.githubusercontent.com/kawspeng/pic/main/pokemoncard-eng.png';
       const musicUrl = 'https://image2url.com/r2/default/audio/1772460393903-880cd115-e83b-49e8-9dc9-b9315acc2d9e.m4a';
 
       useEffect(() => {
@@ -354,7 +355,9 @@ const handleClick = () => {
                 </div>
 
                 <div className="w-full max-w-[280px] md:max-w-sm mx-auto mb-10 rounded-xl overflow-hidden shadow-lg border-4 border-white transform rotate-2 hover:rotate-0 transition-transform duration-300">
-                  <img src={detailImageUrl} alt="Our Photo" className="w-full h-auto object-cover" />
+                  <img src={isEnglish ? detailImageEnUrl : detailImageZhUrl}
+  alt={isEnglish ? "English Invitation Card" : "中文邀請卡"}
+  className="w-full h-auto object-cover" />
                 </div>
 
                 <div className="w-full max-w-[320px] md:max-w-md mx-auto mb-10 rounded-xl overflow-hidden shadow-lg border-4 border-white">
